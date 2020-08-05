@@ -27,7 +27,7 @@ function install()
   cd(dir) do
     download(x) = run(BinDeps.download_cmd(x, basename(x)))
 
-    download("http://junolab.s3.amazonaws.com/blink/julia.png")
+    download("https://raw.githubusercontent.com/JuliaLang/julia-logo-graphics/master/images/julia-logo-color.png")
 
     if Sys.isapple()
       file = "electron-v$version-darwin-x64.zip"
