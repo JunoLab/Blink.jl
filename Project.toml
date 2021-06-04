@@ -21,7 +21,7 @@ WebSockets = "104b5d7c-a370-577a-8038-80a2059c5097"
 
 [compat]
 BinDeps = "0.8, 1.0"
-JSExpr = "0.5"
+JSExpr = "0.5, 1"
 JSON = "0.21, 1.0"
 Lazy = "0.13, 0.14, 0.15"
 MacroTools = "0.4, 0.5"
