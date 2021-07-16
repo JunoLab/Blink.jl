@@ -1,10 +1,8 @@
 using Blink
 using Test
 
-# IMPORTANT: Window(...) cannot appear inside of a @testset for as-of-yet
-# unknown reasons.
-w = Window(Blink.@d(:show => false), async=false);
 @testset "content! Tests" begin
+    w = Window(Blink.@d(:show => false), async=false);
     body!(w, "", async=false);
     @test (@js w document.querySelector("body").innerHTML) == ""
 
@@ -20,25 +18,28 @@ w = Window(Blink.@d(:show => false), async=false);
 end
 
 
-# Test `fade` parameter and scripts:
-# Must create a new window to ensure javascript is reset.
-w = Window(Blink.@d(:show => false), async=false);
-fadeTestHtml = """<script>var testJS = "test";</script><div id="d">hi world</div>"""
-@testset "Fade True" begin
-    body!(w, fadeTestHtml; fade=true, async=false);
-    @test (@js w testJS) == "test"
+@testset "Fade" begin
+    fade_test_html = """
+        <script>var testJS = "test";</script>
+        <div id="d">hi world</div>
+        """
+    # Test `fade` parameter and scripts:
+    # Must create a new window to ensure javascript is reset.
+    @testset "Fade True" begin
+        w = Window(Blink.@d(:show => false), async=false);
+        body!(w, fade_test_html; fade=true, async=false);
+        @test (@js w testJS) == "test"
+    end
+
+    @testset "Fade False" begin
+        w = Window(Blink.@d(:show => false), async=false);
+        body!(w, fade_test_html; fade=false, async=false);
+        @test (@js w testJS) == "test"
+    end
 end
 
-# Must create a new window to ensure javascript is reset.
-w = Window(Blink.@d(:show => false), async=false);
-@testset "Fade False" begin
-
-    body!(w, fadeTestHtml; fade=false, async=false);
-    @test (@js w testJS) == "test"
-end
-
-w = Window(Blink.@d(:show => false), async=false);
 @testset "Sync/Async content reload tests" begin
+    w = Window(Blink.@d(:show => false), async=false);
     sleep_content(seconds) = """
         <script>
             function spinsleep(ms) {
